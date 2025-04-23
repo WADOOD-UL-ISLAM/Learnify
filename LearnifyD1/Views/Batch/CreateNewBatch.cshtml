@@ -1,0 +1,71 @@
+﻿@model Batch
+
+@{
+    ViewBag.Title = "Create a Batch";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">Create a New Batch</h2>
+
+            <form asp-action="CreateNewBatch" method="post" class="needs-validation" novalidate>
+                <!-- Course Selection -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Courses</label>
+                    <select name="CourseId" asp-items="ViewBag.Courses" class="form-select" required>
+                        <option value=""> Select a Course </option>
+                    </select>
+                    <div class="invalid-feedback">Please select a course.</div>
+                </div>
+
+                <!-- Time -->
+                <div class="mb-3">
+                    <label asp-for="time" class="form-label fw-bold">Time</label>
+                    <input type="datetime-local" class="form-control" asp-for="time" required />
+                    <div class="invalid-feedback">Please select a valid date and time.</div>
+                </div>
+                    
+                <!-- Batch Name -->
+                <div class="mb-3">
+                    <label asp-for="BatchName" class="form-label fw-bold">Batch Name</label>
+                    <input type="text" class="form-control" asp-for="BatchName" required />
+                    <div class="invalid-feedback">Please enter a batch name.</div>
+                </div>
+
+
+                <!-- Slots -->
+                <div class="mb-3">
+                    <label asp-for="Slots" class="form-label fw-bold">Slots</label>
+                    <input type="number" asp-for="Slots" class="form-control" min="1" required />
+                    <div class="invalid-feedback">Please enter a valid number of slots (at least 1).</div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Enroll Student
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

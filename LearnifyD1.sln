@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnifyD1", "LearnifyD1\LearnifyD1.csproj", "{0446E9E6-3C3D-4B9C-A36D-0C47F5149924}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0446E9E6-3C3D-4B9C-A36D-0C47F5149924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0446E9E6-3C3D-4B9C-A36D-0C47F5149924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0446E9E6-3C3D-4B9C-A36D-0C47F5149924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0446E9E6-3C3D-4B9C-A36D-0C47F5149924}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

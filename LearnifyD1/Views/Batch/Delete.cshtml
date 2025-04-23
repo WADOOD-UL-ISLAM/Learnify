@@ -1,0 +1,13 @@
+﻿@model Batch
+
+@{
+    ViewBag.Title = "Delete Batch";
+}
+<h4>Are you sure you want to delete the batch @Model.BatchName</h4>
+
+<form asp-action="DeleteBatch" method="post">
+
+    <input type="hidden" name="BatchId" asp-for="BatchId" />
+    <button type="submit" class="btn btn-danger">Delete Batch</button>
+
+</form>

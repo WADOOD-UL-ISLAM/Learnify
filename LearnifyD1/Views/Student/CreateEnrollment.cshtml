@@ -1,0 +1,56 @@
+﻿@model StudentBatch
+
+@{
+    ViewBag.Title = "Create Enrollment";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">Create a New Enrollment</h2>
+
+            <form asp-action="CreateEnrollment" method="post" class="needs-validation" novalidate>
+                <!-- Course Selection -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Courses</label>
+                    <select name="StudentId" asp-items="ViewBag.Students" class="form-select" required>
+                        <option value=""> Select a Student </option>
+                    </select>
+                    <div class="invalid-feedback">Please select a course.</div>
+                </div>
+
+                <!-- Time -->
+                <div class="mb-3">
+                    <label asp-for="dateTime" class="form-label fw-bold">Time</label>
+                    <input type="datetime-local" class="form-control" asp-for="dateTime" required />
+                    <div class="invalid-feedback">Please select a valid date and time.</div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Enroll Student
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

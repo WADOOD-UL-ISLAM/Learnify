@@ -1,0 +1,106 @@
+﻿@model LearnifyD1.Models.Student
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Edit Student</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="StudentId" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="StudentName" class="form-label">Student Name</label>
+                            <input asp-for="StudentName" class="form-control" />
+                            <span asp-validation-for="StudentName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="StudentEmail" class="form-label">Email</label>
+                            <input asp-for="StudentEmail" class="form-control" />
+                            <span asp-validation-for="StudentEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4>Available Courses and Batches</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Batch Name</th>
+                                        <th>Time</th>
+                                        <th>Fees</th>
+                                        <th>Enrolled</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var batchesByCourse = ((IEnumerable<Batch>)ViewBag.Batches)
+                                        .GroupBy(b => b.Course)
+                                        .OrderBy(g => g.Key.CourseName);
+                                        var selectedBatches = ViewBag.SelectedBatches as List<int> ?? new List<int>();
+                                    }
+
+                                    @foreach (var courseGroup in batchesByCourse)
+                                    {
+                                        <tr class="table-info">
+                                            <td colspan="5">
+                                                <strong>@courseGroup.Key.CourseName</strong>
+                                            </td>
+                                        </tr>
+
+                                        @foreach (var batch in courseGroup.OrderBy(b => b.time))
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>@batch.BatchName</td>
+                                                <td>@batch.time.ToString("g")</td>
+                                                <td>@batch.Course?.Fees.ToString("C")</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               name="selectedBatches"
+                                                               value="@batch.BatchId"
+                                                               id="batch_@batch.BatchId"
+                                                        @(selectedBatches.Contains(batch.BatchId) ? "checked" : "") />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                    @if (!batchesByCourse.Any())
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-muted">No batches available</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
