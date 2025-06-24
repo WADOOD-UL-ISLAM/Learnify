@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">📊 Admin Dashboard</h2>
+    <div class="row g-4">
+
+        <!-- Students -->
+        <div class="col-md-3">
+            <div class="card text-white bg-primary shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Students 👨‍🎓</h5>
+                    <h3>@ViewBag.TotalStudents</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="col-md-3">
+            <div class="card text-white bg-success shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Courses 📘</h5>
+                    <h3>@ViewBag.TotalCourses</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batches -->
+        <div class="col-md-3">
+            <div class="card text-white bg-warning shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Batches 📦</h5>
+                    <h3>@ViewBag.TotalBatches</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Fee Collected -->
+        <div class="col-md-3">
+            <div class="card text-white bg-danger shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Total Fees 💰</h5>
+                    <h3>Rs. @ViewBag.TotalPayments.ToString("N0")</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

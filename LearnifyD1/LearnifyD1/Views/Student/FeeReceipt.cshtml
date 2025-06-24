@@ -1,0 +1,96 @@
+﻿@model LearnifyD1.Models.ViewModels.ReceiptViewModel
+
+@{
+    ViewData["Title"] = "Receipt";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+    }
+
+    .receipt-container {
+        border: 1px solid #000;
+        padding: 25px;
+        max-width: 700px;
+        margin: auto;
+    }
+
+    .header, .footer {
+        text-align: center;
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .line {
+        border-bottom: 1px solid #000;
+        margin: 8px 0;
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+</style>
+
+<div class="receipt-container">
+    <div class="header">
+        <h2>LEARNIFY ACADEMY</h2>
+        <p class="bold">RECEIPT</p>
+    </div>
+
+    <div class="row">
+        <div>
+            <p><span class="bold">Receipt No:</span> @Model.ReceiptNumber</p>
+            <p><span class="bold">Date:</span> @Model.PaymentDate.ToShortDateString()</p>
+        </div>
+        <div>
+            <p><span class="bold">From:</span> @Model.StudentName</p>
+            <p><span class="bold">Email:</span> @Model.StudentEmail</p>
+        </div>
+    </div>
+
+    <div class="line"></div>
+
+    <p><span class="bold">Course:</span> @Model.CourseName</p>
+    <p><span class="bold">Payment Method:</span> @Model.PaymentMethod</p>
+    <p><span class="bold">Amount Paid:</span> Rs. @Model.AmountPaid.ToString("N0")</p>
+    <p><span class="bold">In Words:</span> @Model.AmountInWords</p>
+    <p><span class="bold">Paid so far:</span> Rs. @Model.PaidSoFar</p>
+    <p><span class="bold">Remaining:</span> Rs. @Model.Due</p>
+
+    <div class="footer mt-4">
+        <p>learnifyacademypk@gmail.com | www.learnifyacademy.pk</p>
+        <p>0346-2309242, 0330-8531573 | Area 36-D, House No: 6/7, Landhi No: 05 Khi</p>
+        <p style="text-align:right;">Authorized Signature: ______________________</p>
+    </div>
+    <hr />
+    <h4>Fee Payment History</h4>
+
+    <table style="width:100%; border-collapse: collapse; margin-top: 15px;" border="1" cellpadding="8">
+        <thead style="background-color: #f2f2f2;">
+            <tr>
+                <th>Date</th>
+                <th>Amount Paid (Rs.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var fee in Model.FeeRecords)
+            {
+                <tr>
+                    <td>@fee.PaymentDate.ToShortDateString()</td>
+                    <td>@fee.AmountPaid.ToString("N0")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p style="margin-top: 10px;">
+        <strong>Total Paid:</strong> Rs. @Model.PaidSoFar.ToString("N0")<br />
+        <strong>Remaining:</strong> Rs. @Model.Due.ToString("N0")
+    </p>
+
+</div>
