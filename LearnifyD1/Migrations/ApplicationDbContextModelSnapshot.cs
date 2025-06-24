@@ -48,48 +48,6 @@ namespace LearnifyD1.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Batches");
-
-                    b.HasData(
-                        new
-                        {
-                            BatchId = 1,
-                            BatchName = "WD-2023-01",
-                            CourseId = 1,
-                            Slots = 0,
-                            time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            BatchId = 2,
-                            BatchName = "WD-2023-02",
-                            CourseId = 1,
-                            Slots = 0,
-                            time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            BatchId = 3,
-                            BatchName = "MAD-2023-01",
-                            CourseId = 2,
-                            Slots = 0,
-                            time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            BatchId = 4,
-                            BatchName = "DS-2023-01",
-                            CourseId = 3,
-                            Slots = 0,
-                            time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            BatchId = 5,
-                            BatchName = "GD-2023-01",
-                            CourseId = 4,
-                            Slots = 0,
-                            time = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("LearnifyD1.Models.Course", b =>
@@ -110,32 +68,35 @@ namespace LearnifyD1.Migrations
                     b.HasKey("CourseId");
 
                     b.ToTable("Courses");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            CourseId = 1,
-                            CourseName = "Web Development",
-                            Fees = 0
-                        },
-                        new
-                        {
-                            CourseId = 2,
-                            CourseName = "Mobile App Development",
-                            Fees = 0
-                        },
-                        new
-                        {
-                            CourseId = 3,
-                            CourseName = "Data Science",
-                            Fees = 0
-                        },
-                        new
-                        {
-                            CourseId = 4,
-                            CourseName = "Graphic Design",
-                            Fees = 0
-                        });
+            modelBuilder.Entity("LearnifyD1.Models.FeeRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AmountPaid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BatchId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BatchId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("FeeRecords");
                 });
 
             modelBuilder.Entity("LearnifyD1.Models.Student", b =>
@@ -161,36 +122,6 @@ namespace LearnifyD1.Migrations
                     b.HasKey("StudentId");
 
                     b.ToTable("Students");
-
-                    b.HasData(
-                        new
-                        {
-                            StudentId = 1,
-                            ImagePath = "/images/students/student1.jpg",
-                            StudentEmail = "wadoodnawaz@gmail.com",
-                            StudentName = "Jane"
-                        },
-                        new
-                        {
-                            StudentId = 2,
-                            ImagePath = "/images/students/student2.jpg",
-                            StudentEmail = "john.doe@gmail.com",
-                            StudentName = "John"
-                        },
-                        new
-                        {
-                            StudentId = 3,
-                            ImagePath = "/images/students/student3.jpg",
-                            StudentEmail = "alice.smith@gmail.com",
-                            StudentName = "Alice"
-                        },
-                        new
-                        {
-                            StudentId = 4,
-                            ImagePath = "/images/students/student4.jpg",
-                            StudentEmail = "bob.brown@gmail.com",
-                            StudentName = "Bob"
-                        });
                 });
 
             modelBuilder.Entity("LearnifyD1.Models.StudentBatch", b =>
@@ -212,43 +143,6 @@ namespace LearnifyD1.Migrations
                     b.HasIndex("BatchId");
 
                     b.ToTable("StudentBatches", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            StudentId = 1,
-                            BatchId = 1,
-                            EnrollmentId = 0,
-                            dateTime = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            StudentId = 2,
-                            BatchId = 1,
-                            EnrollmentId = 0,
-                            dateTime = new DateTime(2023, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            StudentId = 3,
-                            BatchId = 3,
-                            EnrollmentId = 0,
-                            dateTime = new DateTime(2023, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            StudentId = 4,
-                            BatchId = 4,
-                            EnrollmentId = 0,
-                            dateTime = new DateTime(2023, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            StudentId = 1,
-                            BatchId = 5,
-                            EnrollmentId = 0,
-                            dateTime = new DateTime(2023, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("LearnifyD1.Models.Batch", b =>
@@ -260,6 +154,25 @@ namespace LearnifyD1.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("LearnifyD1.Models.FeeRecord", b =>
+                {
+                    b.HasOne("LearnifyD1.Models.Batch", "Batch")
+                        .WithMany()
+                        .HasForeignKey("BatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearnifyD1.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Batch");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("LearnifyD1.Models.StudentBatch", b =>

@@ -281,3 +281,4 @@ C:\Users\Wadood\source\repos\LearnifyD1\LearnifyD1\bin\Debug\net8.0\runtimes\win
 C:\Users\Wadood\source\repos\LearnifyD1\LearnifyD1\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Wadood\source\repos\LearnifyD1\LearnifyD1\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\Users\Wadood\source\repos\LearnifyD1\LearnifyD1\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Wadood\source\repos\LearnifyD1\LearnifyD1\bin\Debug\net8.0\DinkToPdf.dll

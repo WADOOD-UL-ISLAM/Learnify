@@ -1,6 +1,8 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\students\4c59eb2d-6f63-4dfe-8c21-09028196a6f1_WhatsApp Image 2025-06-24 at 18.38.35_ef7b2613.jpg
 wwwroot\images\students\4da08155-6594-4aa5-ae3a-5cc9634ba089_my_Sign-removebg-preview.png
+wwwroot\images\students\ea35c319-bdec-4fe1-bcb8-18c1c5368102_WhatsApp Image 2025-06-24 at 18.38.35_ef7b2613.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

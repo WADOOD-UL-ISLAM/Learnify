@@ -5,18 +5,17 @@
 }
 
 <div class="container mt-4">
-    <div class="row">
-        <!-- Left: Student Info -->
+    <div class="row align-items-center mb-4">
         <div class="col-md-8">
+            
             <h2>@Model.StudentName</h2>
-            <p class="text-muted">@Model.StudentEmail</p>
+            <p class="text-muted mb-0">@Model.StudentEmail</p>
+           <p><strong>Student ID:</strong> @Model.UniqueId</p>
         </div>
-
-        <!-- Right: Student Image (if exists) -->
         <div class="col-md-4 text-end">
             @if (!string.IsNullOrEmpty(Model.ImagePath))
             {
-                <img src="@Model.ImagePath" alt="Student Image" class="img-thumbnail rounded shadow" style="max-height: 200px;" />
+                <img src="@Model.ImagePath" alt="Student Image" class="img-thumbnail shadow" style="max-height: 150px;" />
             }
             else
             {
@@ -27,16 +26,17 @@
 
     <hr />
 
-    <h4 class="mt-4">Enrolled Batches</h4>
+    <h4>Enrolled Batches</h4>
     @if (Model.studentBatches.Any())
     {
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-striped table-bordered mt-3">
+            <thead class="table-light">
                 <tr>
-                    <th>Batch Name</th>
+                    <th>Batch</th>
                     <th>Course</th>
                     <th>Fee</th>
-                    <th>Date Enrolled</th>
+                    <th>Enrolled On</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,24 +45,25 @@
                     var course = sb.batch.Course;
                     totalFee += course.Fees;
                     <tr>
-                       <td>
-                           <a asp-action="BatchDetail" asp-controller="Student"
-                            asp-route-studentId="@Model.StudentId"
-                            asp-route-batchId="@sb.BatchId">
-                            @sb.batch.BatchName
-                           </a>
-                       </td>
-
+                        <td>@sb.batch.BatchName</td>
                         <td>@course.CourseName</td>
-                        <td>@course.Fees.ToString("N0")</td>
-                        <td>@sb.dateTime.ToString("d")</td>
+                        <td>Rs. @course.Fees.ToString("N0")</td>
+                        <td>@sb.dateTime.ToShortDateString()</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-action="BatchDetail"
+                               asp-route-studentId="@Model.StudentId"
+                               asp-route-batchId="@sb.BatchId">
+                                View
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
 
-        <div class="alert alert-info">
-            <strong>Total Fee:</strong> @totalFee.ToString("N0")
+        <div class="alert alert-info fw-bold">
+            Total Fee: Rs. @totalFee.ToString("N0")
         </div>
     }
     else

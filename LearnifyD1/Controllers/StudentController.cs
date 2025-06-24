@@ -1,5 +1,10 @@
-﻿using LearnifyD1.Data;
+﻿using DinkToPdf;
+using DinkToPdf.Contracts;
+using Humanizer;
+using LearnifyD1.Data;
 using LearnifyD1.Models;
+using LearnifyD1.Models.ViewModels;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +16,13 @@ namespace LearnifyD1.Controllers
     {
         public readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
+       
 
-        public StudentController(ApplicationDbContext dbContext, IWebHostEnvironment env)
+        public StudentController(ApplicationDbContext dbContext, IWebHostEnvironment env )
         {
             _context = dbContext;
             _env = env;
+            
         }
         public async Task<IActionResult> Index()
         {
@@ -130,55 +137,75 @@ namespace LearnifyD1.Controllers
         public async Task<IActionResult> Edit(int id, Student student, List<int> selectedBatches)
         {
             if (id != student.StudentId)
-            {
                 return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                foreach (var state in ModelState)
                 {
-                    // 1. Update student basic info
-                    _context.Update(student);
-
-                    // 2. Simplify batch update process
-                    var existingBatches = await _context.studentBatches
-                        .Where(sb => sb.StudentId == id)
-                        .ToListAsync();
-
-                    // Remove all existing batches first
-                    _context.studentBatches.RemoveRange(existingBatches);
-
-                    // Add newly selected batches
-                    if (selectedBatches != null)
+                    foreach (var error in state.Value.Errors)
                     {
-                        foreach (var batchId in selectedBatches)
-                        {
-                            _context.studentBatches.Add(new StudentBatch
-                            {
-                                StudentId = student.StudentId,
-                                BatchId = batchId,
-                                dateTime = DateTime.Now
-                            });
-                        }
+                        Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
                     }
-
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+
+                ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
+                ViewBag.SelectedBatches = selectedBatches ?? new List<int>();
+                return View(student);
+            }
+
+
+            var studentInDb = await _context.Students
+                .Include(s => s.studentBatches)
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+
+            if (studentInDb == null)
+                return NotFound();
+
+            // 1️⃣ Update basic info
+            studentInDb.StudentName = student.StudentName;
+            studentInDb.StudentEmail = student.StudentEmail;
+
+            // 2️⃣ Handle image update
+            if (student.ImageFile != null && student.ImageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "images", "students");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(student.ImageFile.FileName)}";
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await student.ImageFile.CopyToAsync(stream);
+
+                studentInDb.ImagePath = $"/images/students/{uniqueFileName}";
+            }
+
+            // 3️⃣ Update student batches
+            var existing = await _context.studentBatches
+                .Where(sb => sb.StudentId == id)
+                .ToListAsync();
+
+            _context.studentBatches.RemoveRange(existing);
+
+            if (selectedBatches != null)
+            {
+                foreach (var batchId in selectedBatches)
                 {
-                    if (!StudentExists(student.StudentId))
-                        return NotFound();
-                    throw;
+                    _context.studentBatches.Add(new StudentBatch
+                    {
+                        StudentId = id,
+                        BatchId = batchId,
+                        dateTime = DateTime.Now
+                    });
                 }
             }
 
-            // Reload view data if model state is invalid
-            ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
-            ViewBag.SelectedBatches = selectedBatches ?? new List<int>();
-            return View(student);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
+
         private bool StudentExists(int id)
         {
             return _context.Students.Any(e => e.StudentId == id);
@@ -242,8 +269,64 @@ namespace LearnifyD1.Controllers
             if (enrollment == null) {
                 return NotFound();
             }
+
+            var feeRecords = await _context.FeeRecords
+           .Where(f => f.StudentId == studentid && f.BatchId == batchid)
+           .OrderByDescending(f => f.PaymentDate)
+           .ToListAsync();
+
+            ViewBag.FeeRecords = feeRecords;
+
             return View(enrollment);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFeePayment(int StudentId, int BatchId, DateTime PaymentDate, int AmountPaid)
+        {
+            var fee = new FeeRecord
+            {
+                StudentId = StudentId,
+                BatchId = BatchId,
+                PaymentDate = PaymentDate,
+                AmountPaid = AmountPaid
+            };
+
+            _context.FeeRecords.Add(fee);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("BatchDetail", new { studentId = StudentId, batchId = BatchId });
+        }
+
+        public async Task<IActionResult> ShowReceipt(int studentId, int batchId)
+        {
+            var student = await _context.Students.FindAsync(studentId);
+            var batch = await _context.Batches.Include(b => b.Course).FirstOrDefaultAsync(b => b.BatchId == batchId);
+            var feeRecords = await _context.FeeRecords
+                .Where(f => f.StudentId == studentId && f.BatchId == batchId)
+                .ToListAsync();
+
+            var lastPayment = feeRecords.LastOrDefault();
+            if (lastPayment == null) return NotFound();
+
+            var model = new ReceiptViewModel
+            {
+                ReceiptNumber = $"RCP-{Guid.NewGuid().ToString().Substring(0, 6)}",
+                StudentName = student.StudentName,
+                StudentEmail = student.StudentEmail,
+                PaymentDate = lastPayment.PaymentDate,
+                AmountPaid = lastPayment.AmountPaid,
+                AmountInWords = ConvertToWords(lastPayment.AmountPaid),
+                CourseName = batch.Course.CourseName,
+                PaymentMethod = "Cash",
+                PaidSoFar = feeRecords.Sum(f => f.AmountPaid),
+                Due = batch.Course.Fees - feeRecords.Sum(f => f.AmountPaid),
+                FeeRecords = feeRecords.OrderBy(f => f.PaymentDate).ToList() // 👈 Add this
+            };
+
+            return View("FeeReceipt", model);
+        }
+
+         string ConvertToWords(int number) => number.ToWords().Transform(To.TitleCase) + " Rupees Only";
 
 
     }

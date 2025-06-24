@@ -15,6 +15,8 @@ namespace LearnifyD1.Data
 
         public DbSet<StudentBatch> studentBatches { get; set; }
 
+        public DbSet<FeeRecord> FeeRecords { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<StudentBatch>().ToTable("StudentBatches");
