@@ -1,0 +1,46 @@
+﻿@model LearnifyD1.Models.StudentBatch
+@{
+    ViewData["Title"] = "Batch Details";
+    var enrollmentId = $"{Model.batch.SpecialId}-{Model.student.StudentId}";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white d-flex justify-content-between">
+            <h3>Batch Enrollment Detail</h3>
+            <span class="fw-bold">Enrollment ID: @enrollmentId</span>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <!-- Student Info -->
+                <div class="col-md-6">
+                    <h5>@Model.student.StudentName</h5>
+                    <p>Email: @Model.student.StudentEmail</p>
+                    <p>Student ID: @Model.student.StudentId</p>
+                </div>
+
+                <!-- Student Image -->
+                <div class="col-md-6 text-end">
+                    @if (!string.IsNullOrEmpty(Model.student.ImagePath))
+                    {
+                        <img src="@Model.student.ImagePath" class="img-thumbnail" style="max-height: 150px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Image Available</span>
+                    }
+                </div>
+            </div>
+
+            <hr />
+
+            <!-- Batch and Course Info -->
+            <h5>Batch Information</h5>
+            <p><strong>Batch Name:</strong> @Model.batch.BatchName</p>
+            <p><strong>Course:</strong> @Model.batch.Course.CourseName</p>
+            <p><strong>Fee:</strong> Rs. @Model.batch.Course.Fees.ToString("N0")</p>
+            <p><strong>Enrollment Date:</strong> @Model.dateTime.ToString("d")</p>
+        </div>
+    </div>
+</div>

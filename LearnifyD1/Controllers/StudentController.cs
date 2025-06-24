@@ -10,11 +10,12 @@ namespace LearnifyD1.Controllers
     public class StudentController : Controller
     {
         public readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public StudentController(ApplicationDbContext dbContext)
+        public StudentController(ApplicationDbContext dbContext, IWebHostEnvironment env)
         {
             _context = dbContext;
-
+            _env = env;
         }
         public async Task<IActionResult> Index()
         {
@@ -27,12 +28,12 @@ namespace LearnifyD1.Controllers
             return View(students);
         }
 
-        public async Task <IActionResult> CreateEnrollment()
-        {
+        //public async Task <IActionResult> CreateEnrollment()
+        //{
             
    
-            return View();
-        }
+        //    return View();
+        //}
 
         public async Task<IActionResult> Create()
         {
@@ -41,36 +42,63 @@ namespace LearnifyD1.Controllers
             return View();
         }
 
-        
-       
+
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Student student, List<int> selectedBatches)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
+            //if (!ModelState.IsValid)
+            //{
+            //    ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
+            //    return View(student);
+            //}
 
-                if (selectedBatches != null)
+            // ─── 1️⃣  HANDLE IMAGE UPLOAD ──────────────────────────────────────────────
+            if (student.ImageFile != null && student.ImageFile.Length > 0)
+            {
+                // ‑‑ Ensure target folder exists
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "images", "students");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                // ‑‑ Generate unique file name → GUID_originalName.ext
+                var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(student.ImageFile.FileName)}";
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                // ‑‑ Copy to disk
+                await using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    foreach (var batchId in selectedBatches)
-                    {
-                        _context.studentBatches.Add(new StudentBatch
-                        {
-                            StudentId = student.StudentId,
-                            BatchId = batchId,
-                            dateTime = DateTime.Now
-                        });
-                    }
-                    await _context.SaveChangesAsync();
+                    await student.ImageFile.CopyToAsync(stream);
                 }
 
-                return RedirectToAction(nameof(Index));
+                // ‑‑ Save **relative** path for <img src=""> usage
+                student.ImagePath = $"/images/students/{uniqueFileName}";
+            }
+            // (If no file uploaded, ImagePath stays null or whatever default you prefer)
+
+            // ─── 2️⃣  SAVE STUDENT ─────────────────────────────────────────────────────
+            _context.Add(student);
+            await _context.SaveChangesAsync();
+
+            // ─── 3️⃣  ASSOCIATE BATCHES (unchanged) ───────────────────────────────────
+            if (selectedBatches?.Any() == true)
+            {
+                foreach (var batchId in selectedBatches)
+                {
+                    _context.studentBatches.Add(new StudentBatch
+                    {
+                        StudentId = student.StudentId,
+                        BatchId = batchId,
+                        dateTime = DateTime.Now
+                    });
+                }
+                await _context.SaveChangesAsync();
             }
 
-            ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
-            return View(student);
+            return RedirectToAction(nameof(Index));
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
@@ -186,6 +214,38 @@ namespace LearnifyD1.Controllers
             return View("Index",students);
         }
 
+        
+        public async Task<IActionResult> Details(int id)
+        {
+            var student = await _context.Students
+                .Include(s => s.studentBatches)
+                .ThenInclude(b => b.batch)
+                .ThenInclude(c => c.Course)
+                .FirstOrDefaultAsync(s => s.StudentId == id);
+
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            return View(student);
+        }
+
+        public async Task<IActionResult> BatchDetail(int studentid , int batchid)
+        {
+            var enrollment = await _context.studentBatches
+                .Include(sb => sb.student)
+                .Include(sb => sb.batch)
+                .ThenInclude(b => b.Course)
+                .FirstOrDefaultAsync(sb => sb.StudentId == studentid && sb.BatchId == batchid);
+
+            if (enrollment == null) {
+                return NotFound();
+            }
+            return View(enrollment);
+        }
+
 
     }
+
 }

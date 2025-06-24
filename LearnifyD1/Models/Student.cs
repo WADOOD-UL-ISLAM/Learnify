@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LearnifyD1.Models
 {
@@ -12,7 +13,13 @@ namespace LearnifyD1.Models
         public string StudentName { get; set; }
 
         public string StudentEmail { get; set; }
-        
+
+        [Display(Name = "Upload Image")]
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
+
+        public string ImagePath { get; set; }
+
         public List<StudentBatch> studentBatches { get; set; }
 
         

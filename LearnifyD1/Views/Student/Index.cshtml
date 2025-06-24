@@ -15,13 +15,20 @@
                             <th>Enrolled Batches</th>
                             <th>Courses</th>
                             <th>Actions</th>
+                            <th>Picture</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var student in Model)
                         {
                             <tr>
-                                <td class="fw-semibold">@student.StudentName</td>
+                                <td class="fw-semibold" >
+                                    <a asp-action="Details"
+                                       asp-controller="Student"
+                                       asp-route-id="@student.StudentId">
+                                       @student.StudentName
+                                   </a>
+                                </td>
                                 <td>
                                     <a href="mailto:@student.StudentEmail" class="text-decoration-none">
                                         @student.StudentEmail
@@ -73,6 +80,18 @@
                                         <span class="text-muted">None</span>
                                     }
                                 </td>
+
+                                <td>
+                                    @if (!string.IsNullOrEmpty(student.ImagePath))
+                                    {
+                                        <img src="@student.ImagePath" alt="Student Image" class="img-thumbnail" style="width: 60px; height: 60px;" />
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No Image</span>
+                                    }
+                                </td>
+
                                 
                                 <td>
                                     <div class="d-flex gap-2">

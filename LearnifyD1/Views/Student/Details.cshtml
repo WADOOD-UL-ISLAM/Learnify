@@ -1,0 +1,72 @@
+﻿@model LearnifyD1.Models.Student
+@{
+    ViewData["Title"] = "Student Details";
+    int totalFee = 0;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left: Student Info -->
+        <div class="col-md-8">
+            <h2>@Model.StudentName</h2>
+            <p class="text-muted">@Model.StudentEmail</p>
+        </div>
+
+        <!-- Right: Student Image (if exists) -->
+        <div class="col-md-4 text-end">
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                <img src="@Model.ImagePath" alt="Student Image" class="img-thumbnail rounded shadow" style="max-height: 200px;" />
+            }
+            else
+            {
+                <span class="text-muted">No Image Uploaded</span>
+            }
+        </div>
+    </div>
+
+    <hr />
+
+    <h4 class="mt-4">Enrolled Batches</h4>
+    @if (Model.studentBatches.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Batch Name</th>
+                    <th>Course</th>
+                    <th>Fee</th>
+                    <th>Date Enrolled</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sb in Model.studentBatches)
+                {
+                    var course = sb.batch.Course;
+                    totalFee += course.Fees;
+                    <tr>
+                       <td>
+                           <a asp-action="BatchDetail" asp-controller="Student"
+                            asp-route-studentId="@Model.StudentId"
+                            asp-route-batchId="@sb.BatchId">
+                            @sb.batch.BatchName
+                           </a>
+                       </td>
+
+                        <td>@course.CourseName</td>
+                        <td>@course.Fees.ToString("N0")</td>
+                        <td>@sb.dateTime.ToString("d")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="alert alert-info">
+            <strong>Total Fee:</strong> @totalFee.ToString("N0")
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">This student is not enrolled in any batches.</p>
+    }
+</div>

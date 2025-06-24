@@ -4,6 +4,7 @@ using LearnifyD1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnifyD1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528110654_initialcrete")]
+    partial class initialcrete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,10 +149,6 @@ namespace LearnifyD1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("StudentEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -166,30 +165,26 @@ namespace LearnifyD1.Migrations
                         new
                         {
                             StudentId = 1,
-                            ImagePath = "/images/students/student1.jpg",
-                            StudentEmail = "wadoodnawaz@gmail.com",
+                            StudentEmail = "www.wadoodnawaz@gmail.com",
                             StudentName = "Jane"
                         },
                         new
                         {
                             StudentId = 2,
-                            ImagePath = "/images/students/student2.jpg",
-                            StudentEmail = "john.doe@gmail.com",
-                            StudentName = "John"
+                            StudentEmail = "www.wadoodnawaz@gmail.com",
+                            StudentName = "Jane"
                         },
                         new
                         {
                             StudentId = 3,
-                            ImagePath = "/images/students/student3.jpg",
-                            StudentEmail = "alice.smith@gmail.com",
-                            StudentName = "Alice"
+                            StudentEmail = "www.wadoodnawaz@gmail.com",
+                            StudentName = "Jane"
                         },
                         new
                         {
                             StudentId = 4,
-                            ImagePath = "/images/students/student4.jpg",
-                            StudentEmail = "bob.brown@gmail.com",
-                            StudentName = "Bob"
+                            StudentEmail = "www.wadoodnawaz@gmail.com",
+                            StudentName = "Jane"
                         });
                 });
 
