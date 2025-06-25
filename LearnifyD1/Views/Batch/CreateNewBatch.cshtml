@@ -41,6 +41,55 @@
                     <div class="invalid-feedback">Please enter a valid number of slots (at least 1).</div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label">Batch Days</label>
+                    <select asp-for="BatchDays" class="form-control">
+                        <option value="">-- Select Days --</option>
+                        <option value="Monday, Wednesday, Friday">Monday, Wednesday, Friday</option>
+                        <option value="Tuesday, Thursday, Saturday">Tuesday, Thursday, Saturday</option>
+                        <option value="Saturday, Sunday">Saturday, Sunday</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Start Month</label>
+                    <select asp-for="StartMonth" class="form-control">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">End Month</label>
+                    <select asp-for="EndMonth" class="form-control">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Starting Time</label>
+                    <select asp-for="StartTime" class="form-control">
+                        @foreach (var time in ViewBag.TimeSlots as List<TimeOnly>)
+                        {
+                            <option value="@time">@time.ToString("hh\\:mm")</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ending Time</label>
+                    <select asp-for="EndTime" class="form-control">
+                        @foreach (var time in ViewBag.TimeSlots as List<TimeOnly>)
+                        {
+                            <option value="@time">@time.ToString("hh\\:mm")</option>
+                        }
+                    </select>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">
