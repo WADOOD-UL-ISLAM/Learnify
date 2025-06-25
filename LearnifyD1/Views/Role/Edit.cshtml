@@ -1,0 +1,15 @@
+﻿@model LearnifyD1.Models.Role
+
+<div class="container mt-4">
+    <h3>Edit Role</h3>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="RoleId" />
+        <div class="mb-3">
+            <label asp-for="RoleName" class="form-label">Role Name</label>
+            <input asp-for="RoleName" class="form-control" />
+            <span asp-validation-for="RoleName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-action="Index" class="btn btn-secondary">Back</a>
+    </form>
+</div>

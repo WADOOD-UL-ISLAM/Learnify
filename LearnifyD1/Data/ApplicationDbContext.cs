@@ -16,6 +16,9 @@ namespace LearnifyD1.Data
         public DbSet<StudentBatch> studentBatches { get; set; }
 
         public DbSet<FeeRecord> FeeRecords { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
