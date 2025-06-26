@@ -33,6 +33,12 @@
                         <input asp-for="Slots" type="number" min="1" class="form-control" placeholder="e.g. 15" required />
                         <div class="invalid-feedback">Enter a valid slot count.</div>
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Select Instructor</label>
+                        <select asp-for="InstructorId" asp-items="ViewBag.Instructors" class="form-select">
+                            <option value="">-- Select Instructor --</option>
+                        </select>
+                    </div>
                 </div>
 
                 <!-- DAYS AND MONTHS -->

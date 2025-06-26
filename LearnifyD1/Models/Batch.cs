@@ -32,6 +32,10 @@ namespace LearnifyD1.Models
         [ForeignKey("CourseId")]
         public Course? Course { get; set; }
 
+        // Instructor
+        public int? InstructorId { get; set; }
+        [ForeignKey("InstructorId")]
+        public Employee? Instructor { get; set; }
         public List<StudentBatch> studentbatches { get; set; }
 
         [NotMapped]

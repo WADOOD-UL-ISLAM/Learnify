@@ -1,5 +1,6 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\students\2f726bb5-4f50-4e84-a5ee-3cc2bbee6300_WhatsApp Image 2025-04-06 at 4.52.48 PM (1).jpg
 wwwroot\images\students\4c59eb2d-6f63-4dfe-8c21-09028196a6f1_WhatsApp Image 2025-06-24 at 18.38.35_ef7b2613.jpg
 wwwroot\images\students\4da08155-6594-4aa5-ae3a-5cc9634ba089_my_Sign-removebg-preview.png
 wwwroot\images\students\5353ed99-3df8-4ebd-891c-28d4ecf79bdc_WhatsApp Image 2025-06-24 at 18.38.35_ef7b2613.jpg

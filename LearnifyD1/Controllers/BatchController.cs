@@ -61,7 +61,16 @@ namespace LearnifyD1.Controllers
                     timeSlots.Add(new TimeOnly(hour, 30)); // e.g. 16:30 (but not after 22)
             }
 
+
+
             ViewBag.TimeSlots = timeSlots;
+
+            var instructors = _context.Employees
+              .Include(e => e.Role)
+              .Where(r => r.Role.RoleName == "Instructor")
+              .ToList();
+
+            ViewBag.Instructors = new SelectList(instructors, "EmployeeId", "Name");
 
             return View();
         }
@@ -86,6 +95,13 @@ namespace LearnifyD1.Controllers
 
             ViewBag.TimeSlots = timeSlots;
 
+            var instructors = _context.Employees
+                .Include(e => e.Role)
+                .Where(r => r.Role.RoleName == "Instructor")
+                .ToList();
+
+            ViewBag.Instructors = new SelectList(instructors, "EmployeeId", "Name");
+
             return View("Index",batches);
 
         }
@@ -98,6 +114,23 @@ namespace LearnifyD1.Controllers
                 .Include(c => c.Course)
                 .FirstOrDefaultAsync(b => b.BatchId == id);
             ViewBag.Courses = new SelectList(_context.Courses, "CourseId", "CourseName");
+            List<TimeOnly> timeSlots = new();
+
+            for (int hour = 16; hour <= 22; hour++)
+            {
+                timeSlots.Add(new TimeOnly(hour, 0));   // e.g. 16:00
+                if (hour < 22)
+                    timeSlots.Add(new TimeOnly(hour, 30)); // e.g. 16:30 (but not after 22)
+            }
+
+            ViewBag.TimeSlots = timeSlots;
+
+            var instructors = _context.Employees
+            .Include(e => e.Role)
+            .Where(r => r.Role.RoleName == "Instructor")
+            .ToList();
+
+            ViewBag.Instructors = new SelectList(instructors, "EmployeeId", "Name");
             if (batch == null)
             {
                 return NotFound();
@@ -116,6 +149,12 @@ namespace LearnifyD1.Controllers
             await _context.SaveChangesAsync();
             ViewBag.Courses = await _context.Courses.ToListAsync();
             var batches = await _context.Batches.ToListAsync();
+            var instructors = _context.Employees
+            .Include(e => e.Role)
+            .Where(r => r.Role.RoleName == "Instructor")
+            .ToList();
+
+            ViewBag.Instructors = new SelectList(instructors, "EmployeeId", "Name");
             return View("Index", batches);
         }
 
