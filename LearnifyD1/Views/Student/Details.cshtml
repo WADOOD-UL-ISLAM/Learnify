@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Student Details";
     int totalFee = 0;
+    var batchStatuses = ViewBag.BatchStatuses as Dictionary<int, bool> ?? new Dictionary<int, bool>();
 }
 
 <div class="container mt-4">
@@ -42,10 +43,26 @@
             <tbody>
                 @foreach (var sb in Model.studentBatches)
                 {
+
                     var course = sb.batch.Course;
                     totalFee += course.Fees;
                     <tr>
-                        <td>@sb.batch.BatchName</td>
+                       
+
+                        <td>@sb.batch.BatchName
+                        
+                          @if (batchStatuses.ContainsKey(sb.BatchId))
+                          {
+                              if (batchStatuses[sb.BatchId])
+                              {
+                               <span class="badge bg-success ms-2">Paid</span>
+                              }
+                                 else
+                                {
+                              <span class="badge bg-danger ms-2">Pending</span>
+                                }
+                           }
+                        </td>
                         <td>@course.CourseName</td>
                         <td>Rs. @course.Fees.ToString("N0")</td>
                         <td>@sb.dateTime.ToShortDateString()</td>

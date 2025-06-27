@@ -109,6 +109,12 @@ namespace LearnifyD1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdmissionForm(Student student)
         {
+            bool exists = await _context.Students.AnyAsync(s => s.CNIC == student.CNIC);
+            if (exists)
+            {
+                ModelState.AddModelError("CNIC", "This CNIC is already registered.");
+            }
+
             if (ModelState.IsValid)
             {
                 // Image Upload
@@ -248,6 +254,35 @@ namespace LearnifyD1.Controllers
             {
                 return NotFound();
             }
+
+            int totalFee = 0;
+            int paidFee = 0;
+
+            // 👇 Store batch-wise status here
+            var batchStatuses = new Dictionary<int, bool>(); // BatchId -> isPaidFully
+
+            foreach (var sb in student.studentBatches)
+            {
+                var courseFee = sb.batch.Course.Fees;
+                totalFee += courseFee;
+
+                var feeRecords = await _context.FeeRecords
+                    .Where(f => f.StudentId == id && f.BatchId == sb.BatchId)
+                    .ToListAsync();
+
+                int paidForBatch = feeRecords.Sum(f => f.AmountPaid);
+                paidFee += paidForBatch;
+
+                batchStatuses[sb.BatchId] = paidForBatch >= courseFee;
+            }
+
+            ViewBag.TotalFee = totalFee;
+            ViewBag.PaidFee = paidFee;
+            ViewBag.Remaining = totalFee - paidFee;
+            ViewBag.BatchStatuses = batchStatuses;
+
+
+
 
             return View(student);
         }

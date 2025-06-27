@@ -26,6 +26,9 @@ namespace LearnifyD1.Models
         public string? ImagePath { get; set; }
 
         public string FatherName { get; set; }
+        [Required]
+        [StringLength(15, MinimumLength = 13)]
+        [Display(Name = "CNIC")]
         public string CNIC {  get; set; }
         public DateTime DateofBirth { get; set; }
         public string Gender { get; set; }
