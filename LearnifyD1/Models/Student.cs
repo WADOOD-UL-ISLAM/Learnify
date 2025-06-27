@@ -25,6 +25,21 @@ namespace LearnifyD1.Models
 
         public string? ImagePath { get; set; }
 
+        public string FatherName { get; set; }
+        public string CNIC {  get; set; }
+        public DateTime DateofBirth { get; set; }
+        public string Gender { get; set; }
+        public int age { get; set; }
+
+        public string StudentMobileNumber { get; set; }
+
+        public string GuardianMobileNumber { get; set; }
+
+        public string Address { get; set; }
+
+
+
+
         [NotMapped]
         public string UniqueId => $"LA-{StudentId}-{DateTime.Now.Year}";
         public List<StudentBatch> studentBatches { get; set; }

@@ -143,3 +143,99 @@ body {
             width: 20px;
             text-align: center;
         }
+
+
+/* ========= COMPACT PRINT STYLES ========= */
+@media print {
+
+    /* 1. Hide navbar, footer etc */
+    .no-print,
+    .navbar,
+    footer,
+    header {
+        display: none !important;
+    }
+
+    /* 2. Use A4 Portrait dimensions */
+    @page {
+        size: A4 portrait;
+        margin: 10mm 10mm 15mm 10mm;
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm;
+        height: 297mm;
+        font-size: 11px !important;
+        color: black !important;
+        background: white !important;
+    }
+
+    /* 3. Container full-width on print */
+    .container,
+    .form-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    /* 4. Avoid page breaks in sections */
+    .row,
+    .col-md-6,
+    .col-md-4,
+    .col-md-3,
+    .form-section,
+    .card-body,
+    .section-title,
+    .declaration-box,
+    .signature-area {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* 5. Reduce input sizes */
+    input,
+    textarea,
+    select {
+        font-size: 11px !important;
+        padding: 4px !important;
+        margin-bottom: 6px !important;
+        height: auto !important;
+    }
+
+    label,
+    .form-label,
+    .section-title {
+        font-size: 12px !important;
+        margin-bottom: 3px !important;
+    }
+
+    .form-title {
+        font-size: 16px !important;
+    }
+
+    /* 6. Remove box shadows and borders */
+    .card,
+    .shadow-sm,
+    .shadow-lg {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    /* 7. Prevent image stretching */
+    img {
+        max-height: 100px !important;
+        max-width: 100px !important;
+        object-fit: contain !important;
+    }
+
+    /* 8. Align signature and stamp sections */
+    .signature-line {
+        border-top: 1px solid #000;
+        width: 100%;
+        height: 40px;
+    }
+}
+    

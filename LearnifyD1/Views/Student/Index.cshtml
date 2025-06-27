@@ -96,6 +96,10 @@
 
                                 <td>
                                     <div class="d-flex gap-2">
+                                        <a asp-action="PreviewAdmissionForm" asp-route-id="@student.StudentId" class="btn btn-outline-info btn-sm">
+                                            <i class="bi bi-eye-fill"></i> Preview
+                                        </a>
+
                                         <a asp-action="Edit" asp-controller="Student" asp-route-id="@student.StudentId"
                                            class="btn btn-sm btn-outline-primary" title="Edit" data-bs-toggle="tooltip">
                                             <i class="fas fa-edit"></i>

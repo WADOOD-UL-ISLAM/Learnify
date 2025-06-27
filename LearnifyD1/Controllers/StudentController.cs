@@ -35,13 +35,6 @@ namespace LearnifyD1.Controllers
             return View(students);
         }
 
-        //public async Task <IActionResult> CreateEnrollment()
-        //{
-            
-   
-        //    return View();
-        //}
-
         public async Task<IActionResult> Create()
         {
             ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
@@ -106,6 +99,44 @@ namespace LearnifyD1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AdmissionForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdmissionForm(Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                // Image Upload
+                if (student.ImageFile != null && student.ImageFile.Length > 0)
+                {
+                    var folderPath = Path.Combine(_env.WebRootPath, "images", "students");
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    var uniqueFile = $"{Guid.NewGuid()}_{Path.GetFileName(student.ImageFile.FileName)}";
+                    var fullPath = Path.Combine(folderPath, uniqueFile);
+
+                    using var stream = new FileStream(fullPath, FileMode.Create);
+                    await student.ImageFile.CopyToAsync(stream);
+
+                    student.ImagePath = $"/images/students/{uniqueFile}";
+                }
+
+                _context.Students.Add(student);
+                await _context.SaveChangesAsync();
+
+                TempData["success"] = "Admission form submitted successfully!";
+                return RedirectToAction("Index"); // or RedirectToAction("AdmissionSuccess");
+            }
+
+            return View(student);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
@@ -136,51 +167,14 @@ namespace LearnifyD1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Student student, List<int> selectedBatches)
         {
-            if (id != student.StudentId)
-                return NotFound();
-
-            if (!ModelState.IsValid)
-            {
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
-                    }
-                }
-
-                ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
-                ViewBag.SelectedBatches = selectedBatches ?? new List<int>();
-                return View(student);
-            }
-
-
+    
+           
             var studentInDb = await _context.Students
                 .Include(s => s.studentBatches)
                 .FirstOrDefaultAsync(s => s.StudentId == id);
 
             if (studentInDb == null)
                 return NotFound();
-
-            // 1️⃣ Update basic info
-            studentInDb.StudentName = student.StudentName;
-            studentInDb.StudentEmail = student.StudentEmail;
-
-            // 2️⃣ Handle image update
-            if (student.ImageFile != null && student.ImageFile.Length > 0)
-            {
-                var uploadsFolder = Path.Combine(_env.WebRootPath, "images", "students");
-                if (!Directory.Exists(uploadsFolder))
-                    Directory.CreateDirectory(uploadsFolder);
-
-                var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(student.ImageFile.FileName)}";
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using var stream = new FileStream(filePath, FileMode.Create);
-                await student.ImageFile.CopyToAsync(stream);
-
-                studentInDb.ImagePath = $"/images/students/{uniqueFileName}";
-            }
 
             // 3️⃣ Update student batches
             var existing = await _context.studentBatches
@@ -328,6 +322,35 @@ namespace LearnifyD1.Controllers
 
          string ConvertToWords(int number) => number.ToWords().Transform(To.TitleCase) + " Rupees Only";
 
+        [HttpGet]
+        public async Task<IActionResult> PreviewAdmissionForm(int id)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student == null) return NotFound();
+            return View("AdmissionFormPreview", student);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PreviewAdmissionForm(Student student)
+        {
+            var studentInDb = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == student.StudentId);
+            if (studentInDb == null) return NotFound();
+
+            studentInDb.StudentName = student.StudentName;
+            studentInDb.FatherName = student.FatherName;
+            studentInDb.CNIC = student.CNIC;
+            studentInDb.DateofBirth = student.DateofBirth;
+            studentInDb.Gender = student.Gender;
+            studentInDb.age = student.age;
+            studentInDb.StudentEmail = student.StudentEmail;
+            studentInDb.StudentMobileNumber = student.StudentMobileNumber;
+            studentInDb.GuardianMobileNumber = student.GuardianMobileNumber;
+            studentInDb.Address = student.Address;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
 
     }
 
