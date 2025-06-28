@@ -6,6 +6,7 @@ using LearnifyD1.Models;
 using LearnifyD1.Models.ViewModels;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
@@ -14,6 +15,15 @@ namespace LearnifyD1.Controllers
 {
     public class StudentController : Controller
     {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                context.Result = new RedirectToActionResult("Index", "Login", null);
+            }
+            base.OnActionExecuting(context);
+        }
+
         public readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
        
@@ -386,6 +396,9 @@ namespace LearnifyD1.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+
+       
 
     }
 

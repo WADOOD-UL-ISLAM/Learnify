@@ -58,6 +58,16 @@
                     <span class="sidebar-text">Create Employee</span>
                 </a>
             </li>
+            @if (Context.Session.GetString("Username") != null)
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </li>
+            }
+
+
            
         </ul>
     </div>

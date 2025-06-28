@@ -21,7 +21,7 @@ namespace LearnifyD1.Models
 
         public int AmountPaid { get; set; }
 
-
+        
     }
 
 }

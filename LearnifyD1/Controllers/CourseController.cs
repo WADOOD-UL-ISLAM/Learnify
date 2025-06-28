@@ -1,17 +1,27 @@
-﻿using System;
+﻿using LearnifyD1.Data;
+using LearnifyD1.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LearnifyD1.Data;
-using LearnifyD1.Models;
 
 namespace LearnifyD1.Controllers
 {
     public class CourseController : Controller
     {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                context.Result = new RedirectToActionResult("Index", "Login", null);
+            }
+            base.OnActionExecuting(context);
+        }
+
         private readonly ApplicationDbContext _context;
 
         public CourseController(ApplicationDbContext context)

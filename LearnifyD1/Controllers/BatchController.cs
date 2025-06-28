@@ -1,6 +1,7 @@
 ﻿using LearnifyD1.Data;
 using LearnifyD1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
@@ -9,6 +10,15 @@ namespace LearnifyD1.Controllers
 {
     public class BatchController : Controller
     {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                context.Result = new RedirectToActionResult("Index", "Login", null);
+            }
+            base.OnActionExecuting(context);
+        }
+
         public readonly ApplicationDbContext _context;
 
         public BatchController(ApplicationDbContext dbContext)
