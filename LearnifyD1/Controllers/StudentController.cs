@@ -34,16 +34,39 @@ namespace LearnifyD1.Controllers
             _env = env;
             
         }
-        public async Task<IActionResult> Index()
+
+
+        public async Task<IActionResult> Index(string searchString, int page = 1, int pageSize = 10)
         {
-            var students = await _context.Students
-                .Include(sb => sb.studentBatches)
-                .ThenInclude(b => b.batch)
-                .ThenInclude(c => c.Course)
+            var query = _context.Students
+                .Include(s => s.studentBatches)
+                .ThenInclude(sb => sb.batch)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(s =>
+                    s.StudentName.Contains(searchString) ||
+                    s.StudentEmail.Contains(searchString));
+            }
+
+            int totalStudents = await query.CountAsync();
+
+            var students = await query
+                .OrderBy(s => s.StudentName)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalStudents = totalStudents;
+            ViewBag.SearchString = searchString;
 
             return View(students);
         }
+
+
 
         public async Task<IActionResult> Create()
         {
@@ -367,35 +390,7 @@ namespace LearnifyD1.Controllers
 
          string ConvertToWords(int number) => number.ToWords().Transform(To.TitleCase) + " Rupees Only";
 
-        [HttpGet]
-        public async Task<IActionResult> PreviewAdmissionForm(int id)
-        {
-            var student = await _context.Students.FindAsync(id);
-            if (student == null) return NotFound();
-            return View("AdmissionFormPreview", student);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PreviewAdmissionForm(Student student)
-        {
-            var studentInDb = await _context.Students.FirstOrDefaultAsync(s => s.StudentId == student.StudentId);
-            if (studentInDb == null) return NotFound();
-
-            studentInDb.StudentName = student.StudentName;
-            studentInDb.FatherName = student.FatherName;
-            studentInDb.CNIC = student.CNIC;
-            studentInDb.DateofBirth = student.DateofBirth;
-            studentInDb.Gender = student.Gender;
-            studentInDb.age = student.age;
-            studentInDb.StudentEmail = student.StudentEmail;
-            studentInDb.StudentMobileNumber = student.StudentMobileNumber;
-            studentInDb.GuardianMobileNumber = student.GuardianMobileNumber;
-            studentInDb.Address = student.Address;
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+       
 
 
        

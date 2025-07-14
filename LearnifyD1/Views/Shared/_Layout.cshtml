@@ -1,135 +1,189 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LearnifyD1</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LearnifyD1.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/custom-navbar.css" /> <!-- Custom CSS -->
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <title>@ViewData["Title"] - Learnify</title>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon">
 </head>
-<body>
-    <div class="sidebar no-print" id="sidebar">
-        <div class="sidebar-toggle" onclick="toggleSidebar()">
-            <i class="fas fa-chevron-left" id="sidebar-toggle-icon"></i>
+<body class="d-flex flex-column h-100">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header d-flex align-items-center justify-content-between px-3 py-4">
+            <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="fas fa-graduation-cap me-2 text-primary"></i>
+                <span class="sidebar-text fw-bold">Learnify</span>
+            </a>
+            <button class="sidebar-toggle btn btn-sm" id="sidebarToggle">
+                <i class="fas fa-chevron-left"></i>
+            </button>
         </div>
-        <a class="navbar-brand d-block px-3 py-2 mb-3" asp-area="" asp-controller="Home" asp-action="Index">
-            <i class="fas fa-graduation-cap"></i>
-            <span class="sidebar-text">LearnifyD1</span>
-        </a>
+
+        <hr class="my-0 mx-3">
+
         <ul class="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Course" asp-action="Index">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home"></i>
+                    <span class="sidebar-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Student" asp-action="Index">
                     <i class="fas fa-users"></i>
-                    <span class="sidebar-text">Course</span>
+                    <span class="sidebar-text">Students</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Batch" asp-action="Index">
+                <a class="nav-link" asp-controller="Course" asp-action="Index">
                     <i class="fas fa-book"></i>
-                    <span class="sidebar-text">Batch</span>
+                    <span class="sidebar-text">Courses</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Student" asp-action="Index">
-                    <i class="fas fa-person"></i>
-                    <span class="sidebar-text">Enrolments</span>
+                <a class="nav-link" asp-controller="Batch" asp-action="Index">
+                    <i class="fas fa-book-open-reader"></i>
+                    <span class="sidebar-text">Batch Management</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Student" asp-action="AdmissionForm">
-                    <i class="fas fa-plus"></i>
-                    <span class="sidebar-text">Create Student</span>
+                <a class="nav-link" asp-controller="Student" asp-action="AdmissionForm">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="sidebar-text">Add a Student</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">
-                    <i class="fas fa-plus"></i>
-                    <span class="sidebar-text">Create Role</span>
+                <a class="nav-link" asp-controller="Role" asp-action="Index">
+                    <i class="fas fa-user-tie"></i>
+                    <span class="sidebar-text">Roles</span>
                 </a>
             </li>
+            </li>
             <li class="nav-item">
-                <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="Index">
-                    <i class="fas fa-plus"></i>
-                    <span class="sidebar-text">Create Employee</span>
+                <a class="nav-link" asp-controller="Employee" asp-action="Index">
+                    <i class="fas fa-address-card"></i>
+                    <span class="sidebar-text">Employees</span>
                 </a>
             </li>
             @if (Context.Session.GetString("Username") != null)
             {
                 <li class="nav-item">
-                    <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">
-                        <i class="bi bi-box-arrow-right"></i> Logout
+                    <a class="nav-link" asp-controller="Login" asp-action="Logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                        <span class="sidebar-text">Logout</span>
                     </a>
                 </li>
             }
-
-
-           
         </ul>
     </div>
 
-    <div class="main-content" id="main-content">
-        <div class="container-fluid px-4">
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Navigation -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <span class="nav-link text-dark">
+                                <i class="far fa-calendar-alt me-1"></i>
+                                <span id="currentDateTime"></span>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>
+                                <span>@User.Identity?.Name</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
 
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2025 - LearnifyD1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <!-- Footer -->
+        <footer class="border-top footer text-muted mt-auto py-3">
+            <div class="container text-center">
+                &copy; @DateTime.Now.Year - Learnify - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             </div>
         </footer>
     </div>
 
+    <!-- JavaScript Libraries -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Custom Scripts -->
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('main-content');
-            const toggleIcon = document.getElementById('sidebar-toggle-icon');
+        // Sidebar toggle functionality
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('mainContent').classList.toggle('collapsed');
 
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('collapsed');
-
-            if (sidebar.classList.contains('collapsed')) {
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
+            // Change icon based on state
+            const icon = this.querySelector('i');
+            if (document.getElementById('sidebar').classList.contains('collapsed')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
             } else {
-                toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
             }
+        });
+
+        // Display current date and time
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-US', options);
         }
 
-        // Automatically collapse sidebar on small screens
-        function handleResize() {
-            const sidebar = document.getElementById('sidebar');
-            const mainContent = document.getElementById('main-content');
-            const toggleIcon = document.getElementById('sidebar-toggle-icon');
-
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add('collapsed');
-                mainContent.classList.add('collapsed');
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
-            } else {
-                sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('collapsed');
-                toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
-            }
-        }
-
-        window.addEventListener('resize', handleResize);
-        document.addEventListener('DOMContentLoaded', handleResize);
+        updateDateTime();
+        setInterval(updateDateTime, 60000); // Update every minute
     </script>
-    @await RenderSectionAsync("Scripts", required: false)
 
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,5 +1,27 @@
+/* ========== BASE STYLES ========== */
+:root {
+    --primary-color: #2c3e50;
+    --primary-light: #3d566e;
+    --secondary-color: #27ae60;
+    --secondary-light: #3cc978;
+    --accent-color: #e67e22;
+    --accent-light: #eb9950;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #212529;
+    --white: #ffffff;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --sidebar-width: 250px;
+    --sidebar-collapsed: 60px;
+    --transition-speed: 0.3s;
+}
+
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -8,84 +30,80 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-    position: relative;
-    min-height: 100%;
-}
-
 body {
     margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+    line-height: 1.6;
 }
 
-/* custom-navbar.css */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* ========== FOCUS STATES ========== */
+.btn:focus, .btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+    border-color: var(--secondary-color);
+}
+
+/* ========== NAVIGATION ========== */
 .custom-navbar {
-    position: relative;
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1050;
 }
 
 .custom-navbar-collapse {
     position: fixed;
     top: 0;
-    left: -250px; /* Initially hidden off-screen */
+    left: -250px;
     height: 100%;
-    width: 100px;
-    background-color: #fff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-    transition: left 0.3s ease-in-out; /* Sliding transition */
+    width: var(--sidebar-width);
+    background-color: var(--white);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transition: left var(--transition-speed) ease-in-out;
     overflow-y: auto;
+    padding-top: 20px;
 }
 
     .custom-navbar-collapse.show {
-        left: 0; /* Slide in */
+        left: 0;
     }
 
 .navbar-toggler {
     position: absolute;
     top: 10px;
     left: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
 }
 
-@media (min-width: 768px) {
-    .custom-navbar-collapse {
-        position: static;
-        height: auto;
-        width: auto;
-        background-color: transparent;
-        box-shadow: none;
-    }
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(13, 110, 253, 0.05);
-}
-
-.badge {
-    font-weight: 500;
-}
-
-.dropdown-item {
-    white-space: normal;
-}
-
+/* ========== SIDEBAR ========== */
 .sidebar {
-    width: 250px;
+    width: var(--sidebar-width);
     height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
-    background: #f8f9fa;
-    border-right: 1px solid #dee2e6;
-    transition: all 0.3s;
+    background: var(--white);
+    border-right: 1px solid var(--medium-gray);
+    transition: all var(--transition-speed);
     z-index: 1000;
     padding-top: 20px;
 }
 
     .sidebar.collapsed {
-        width: 60px;
+        width: var(--sidebar-collapsed);
     }
 
         .sidebar.collapsed .sidebar-text {
@@ -96,8 +114,8 @@ body {
     position: absolute;
     right: -15px;
     top: 10px;
-    background: white;
-    border: 1px solid #dee2e6;
+    background: var(--white);
+    border: 1px solid var(--medium-gray);
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -106,15 +124,22 @@ body {
     justify-content: center;
     cursor: pointer;
     z-index: 1001;
+    transition: all var(--transition-speed);
 }
 
+    .sidebar-toggle:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
 .main-content {
-    margin-left: 250px;
-    transition: all 0.3s;
+    margin-left: var(--sidebar-width);
+    transition: all var(--transition-speed);
+    padding: 20px;
 }
 
     .main-content.collapsed {
-        margin-left: 60px;
+        margin-left: var(--sidebar-collapsed);
     }
 
 .sidebar-nav {
@@ -124,31 +149,141 @@ body {
 }
 
     .sidebar-nav .nav-item {
-        padding: 10px 15px;
+        padding: 8px 15px;
+        transition: background-color 0.2s;
+        border-radius: 4px;
+        margin: 2px 10px;
     }
 
+        .sidebar-nav .nav-item:hover {
+            background-color: rgba(39, 174, 96, 0.1);
+        }
+
     .sidebar-nav .nav-link {
-        color: #212529;
+        color: var(--dark-gray);
         text-decoration: none;
         display: flex;
         align-items: center;
+        transition: color 0.2s;
     }
 
         .sidebar-nav .nav-link:hover {
-            color: #0d6efd;
+            color: var(--secondary-color);
         }
 
         .sidebar-nav .nav-link i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
+            color: var(--primary-color);
         }
 
+/* ========== TABLES ========== */
+.table {
+    background-color: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
-/* ========= COMPACT PRINT STYLES ========= */
+    .table th {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 500;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: rgba(39, 174, 96, 0.1);
+}
+
+/* ========== BADGES ========== */
+.badge {
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 12px;
+}
+
+    .badge.bg-primary {
+        background-color: var(--primary-color) !important;
+    }
+
+    .badge.bg-success {
+        background-color: var(--secondary-color) !important;
+    }
+
+/* ========== BUTTONS ========== */
+.btn {
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+    .btn-primary:hover {
+        background-color: var(--primary-light);
+        transform: translateY(-1px);
+    }
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+
+    .btn-secondary:hover {
+        background-color: var(--secondary-light);
+        transform: translateY(-1px);
+    }
+
+.btn-accent {
+    background-color: var(--accent-color);
+}
+
+    .btn-accent:hover {
+        background-color: var(--accent-light);
+        transform: translateY(-1px);
+    }
+
+/* ========== CARDS ========== */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+    }
+
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* ========== UTILITY CLASSES ========== */
+.shadow-sm {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.rounded {
+    border-radius: 6px !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+/* ========== PRINT STYLES (unchanged) ========== */
 @media print {
-
-    /* 1. Hide navbar, footer etc */
     .no-print,
     .navbar,
     footer,
@@ -156,7 +291,6 @@ body {
         display: none !important;
     }
 
-    /* 2. Use A4 Portrait dimensions */
     @page {
         size: A4 portrait;
         margin: 10mm 10mm 15mm 10mm;
@@ -172,7 +306,6 @@ body {
         background: white !important;
     }
 
-    /* 3. Container full-width on print */
     .container,
     .form-container {
         width: 100% !important;
@@ -181,7 +314,6 @@ body {
         padding: 0 !important;
     }
 
-    /* 4. Avoid page breaks in sections */
     .row,
     .col-md-6,
     .col-md-4,
@@ -195,7 +327,6 @@ body {
         break-inside: avoid !important;
     }
 
-    /* 5. Reduce input sizes */
     input,
     textarea,
     select {
@@ -216,7 +347,6 @@ body {
         font-size: 16px !important;
     }
 
-    /* 6. Remove box shadows and borders */
     .card,
     .shadow-sm,
     .shadow-lg {
@@ -224,18 +354,15 @@ body {
         border: none !important;
     }
 
-    /* 7. Prevent image stretching */
     img {
         max-height: 100px !important;
         max-width: 100px !important;
         object-fit: contain !important;
     }
 
-    /* 8. Align signature and stamp sections */
     .signature-line {
         border-top: 1px solid #000;
         width: 100%;
         height: 40px;
     }
 }
-    

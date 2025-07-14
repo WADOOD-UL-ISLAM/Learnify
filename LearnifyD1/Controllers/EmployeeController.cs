@@ -91,9 +91,9 @@ namespace LearnifyD1.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(Employee employee , int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            //var employee = await _context.Employees.FindAsync(id);
             if (employee == null) return NotFound();
 
             _context.Employees.Remove(employee);

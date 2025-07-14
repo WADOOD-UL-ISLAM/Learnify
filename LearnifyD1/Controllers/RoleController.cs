@@ -86,9 +86,9 @@ namespace LearnifyD1.Controllers
         // POST: Role/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete( Role role , int id)
         {
-            var role = await _context.Roles.FindAsync(id);
+            //var role = await _context.Roles.FindAsync(id);
             _context.Roles.Remove(role);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
