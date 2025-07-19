@@ -37,27 +37,9 @@
 
         <ul class="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link" asp-controller="Home" asp-action="Index">
-                    <i class="fas fa-home"></i>
-                    <span class="sidebar-text">Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" asp-controller="Student" asp-action="Index">
                     <i class="fas fa-users"></i>
                     <span class="sidebar-text">Students</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Course" asp-action="Index">
-                    <i class="fas fa-book"></i>
-                    <span class="sidebar-text">Courses</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Batch" asp-action="Index">
-                    <i class="fas fa-book-open-reader"></i>
-                    <span class="sidebar-text">Batch Management</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -66,19 +48,50 @@
                     <span class="sidebar-text">Add a Student</span>
                 </a>
             </li>
-            <li class="nav-item">
+           
+            @{
+                var username = Context.Session.GetString("Username");
+            }
+
+            @if (username == "admin")
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="fas fa-home"></i>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Course" asp-action="Index">
+                        <i class="fas fa-book"></i>
+                        <span class="sidebar-text">Courses</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Batch" asp-action="Index">
+                        <i class="fas fa-book-open-reader"></i>
+                        <span class="sidebar-text">Batch Management</span>
+                    </a>
+                </li>
+                 <li class="nav-item">
                 <a class="nav-link" asp-controller="Role" asp-action="Index">
                     <i class="fas fa-user-tie"></i>
                     <span class="sidebar-text">Roles</span>
                 </a>
-            </li>
-            </li>
-            <li class="nav-item">
+                </li>
+            
+                <li class="nav-item">
                 <a class="nav-link" asp-controller="Employee" asp-action="Index">
                     <i class="fas fa-address-card"></i>
                     <span class="sidebar-text">Employees</span>
                 </a>
-            </li>
+                </li>
+            }
+           
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Report" asp-action="UnpaidFeesDesk">📄 Unpaid Fees Report</a>
+                </li>
+            
             @if (Context.Session.GetString("Username") != null)
             {
                 <li class="nav-item">

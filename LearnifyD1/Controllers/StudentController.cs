@@ -194,8 +194,10 @@ namespace LearnifyD1.Controllers
                 return NotFound();
             }
 
+            int currentMonth = DateTime.Now.Month;
             // Get all available batches
-            ViewBag.Batches = await _context.Batches.Include(b => b.Course).ToListAsync();
+            ViewBag.Batches = await _context.Batches.Include(b => b.Course).Where( t => t.EndMonth >= currentMonth)
+                .ToListAsync();
             // Get currently selected batch IDs
             ViewBag.SelectedBatches = student.studentBatches.Select(sb => sb.BatchId).ToList();
 
@@ -387,10 +389,7 @@ namespace LearnifyD1.Controllers
 
             return View("FeeReceipt", model);
         }
-
          string ConvertToWords(int number) => number.ToWords().Transform(To.TitleCase) + " Rupees Only";
-
-
         [HttpGet]
         public async Task<IActionResult> AdmissionFormPreview(int id)
         {
@@ -400,7 +399,7 @@ namespace LearnifyD1.Controllers
                 return NotFound();
             }
 
-            // Check for existing image
+            
             string imagePath = $"/images/students/student_{student.StudentId}.jpg";
             string physicalPath = Path.Combine(_env.WebRootPath, "images", "students", $"student_{student.StudentId}.jpg");
 
@@ -411,7 +410,6 @@ namespace LearnifyD1.Controllers
 
             return View(student);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdmissionFormPreview(int id, Student model)

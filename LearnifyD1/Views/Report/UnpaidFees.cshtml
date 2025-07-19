@@ -1,0 +1,31 @@
+﻿@model List<LearnifyD1.Models.ViewModels.UnpaidFeeViewModel>
+
+<h3>Unpaid Fee Report</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Student Name</th>
+            <th>Student Mobile</th>
+            <th>Guardian Mobile</th>
+            <th>Batch</th>
+            <th>Total Fee</th>
+            <th>Paid</th>
+            <th>Remaining</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentName</td>
+                <td>@item.StudentMobile</td>
+                <td>@item.GuardianMobile</td>
+                <td>@item.BatchName</td>
+                <td>@item.TotalFee</td>
+                <td>@item.PaidAmount</td>
+                <td>@item.RemainingAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

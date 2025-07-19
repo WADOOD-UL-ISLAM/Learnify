@@ -27,10 +27,10 @@ namespace LearnifyD1.Controllers
         }
         public async Task< IActionResult> Index()
         {
+            int currentMonth = DateTime.Now.Month;
             ViewBag.Courses = await _context.Courses.ToListAsync();
-            var batches = await _context.Batches.
-                Include(c => c.Course)
-                .ToListAsync();
+            var batches = await _context.Batches.Include(b => b.Course).Where(t => t.EndMonth >= currentMonth)
+               .ToListAsync();
             return View(batches);
         }
 
