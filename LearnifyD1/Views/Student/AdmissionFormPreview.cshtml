@@ -1,14 +1,10 @@
 ﻿@model LearnifyD1.Models.Student
 @{
-    ViewData["Title"] = "Preview & Edit Admission Form";
+    ViewData["Title"] = "Admission Form";
     var today = DateTime.Today.ToString("dd-MM-yyyy");
 }
 
-
 <style>
-
-
-
     .form-container {
         max-width: 1000px;
         margin: 0 auto;
@@ -78,14 +74,43 @@
         margin-top: 30px;
     }
 
-    .photo-upload {
-        border: 2px dashed #ccc;
-        padding: 10px;
-        text-align: center;
-        border-radius: 5px;
-        background-color: #f8f9fa;
+    .photo-upload-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
     }
 
+    .photo-preview {
+        width: 100px;
+        height: 120px;
+        border: 1px solid #ddd;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+        .photo-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+    .upload-controls {
+        flex: 1;
+    }
+
+    .photo-upload-label {
+        cursor: pointer;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .photo-instructions {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
 
     @@media print {
         .no-print {
@@ -147,11 +172,14 @@
             margin: 0;
             padding: 0;
         }
-    }
 
+        .photo-preview {
+            border: 1px solid #000 !important;
+        }
+    }
 </style>
 
-<div class="container form-container print-only " style="page-break-inside: avoid;">
+<div class="container form-container print-only" style="page-break-inside: avoid;">
     <div class="card shadow-sm">
         <div class="card-body p-4">
 
@@ -179,7 +207,7 @@
                 </div>
             </div>
 
-            <form asp-action="PreviewAdmissionForm" method="post" enctype="multipart/form-data">
+            <form asp-action="AdmissionFormPreview" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
 
                 <!-- Personal Information Section -->
@@ -187,13 +215,42 @@
                     <div class="section-title">PERSONAL INFORMATION</div>
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Student Name</label>
                             <input asp-for="StudentName" class="form-control" placeholder="Enter full name" />
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label">Father Name</label>
                             <input asp-for="FatherName" class="form-control" placeholder="Enter father's name" />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Photograph</label>
+                            <div class="photo-upload-container">
+                                <div class="photo-preview" id="photoPreview">
+                                    @if (!string.IsNullOrEmpty(Model.ImagePath))
+                                    {
+                                        <img src="@Model.ImagePath" alt="Student Photo" id="previewImage" />
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No photo</span>
+                                    }
+                                </div>
+                                <div class="upload-controls">
+                                    <div class="input-group">
+                                        <input asp-for="ImageFile" type="file" class="form-control" id="ImageFile" accept="image/*"
+                                               onchange="previewImage(this);" style="display: none;" />
+                                        <label for="ImageFile" class="btn btn-outline-secondary">
+                                            <i class="bi bi-upload"></i> Choose Photo
+                                        </label>
+                                        <button type="button" class="btn btn-outline-danger" onclick="clearImage()">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div id="photoFileName" class="photo-instructions mt-1">No file chosen</div>
+                                    <div class="photo-instructions">Max 2MB, JPG/PNG</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -201,6 +258,7 @@
                         <div class="col-md-6">
                             <label class="form-label">CNIC</label>
                             <input asp-for="CNIC" class="form-control" placeholder="XXXXX-XXXXXXX-X" />
+                            <span asp-validation-for="CNIC" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Date of Birth</label>
@@ -285,19 +343,6 @@
                     </div>
                 </div>
 
-                <!-- Photo Upload Section -->
-                <div class="mb-4 no-print">
-                    <div class="section-title">STUDENT PHOTOGRAPH</div>
-                    <div class="photo-upload">
-                        <div class="mb-2">
-                            <i class="bi bi-camera" style="font-size: 24px;"></i>
-                        </div>
-                        <label class="form-label">Recent Passport Size Color Photograph</label>
-                        <input asp-for="ImageFile" type="file" class="form-control mt-2" accept="image/*" />
-                        <small class="text-muted">(Max size: 2MB, JPG/PNG format)</small>
-                    </div>
-                </div>
-
                 <!-- Declaration Section -->
                 <div class="mb-4">
                     <div class="section-title">DECLARATION</div>
@@ -349,6 +394,51 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
+             // Initialize with any existing image
+        $(document).ready(function() {
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                    <text>
+                    $('#photoPreview').html('<img src="@Model.ImagePath" id="previewImage" style="max-width:100%; max-height:100%;" />');
+                    </text>
+            }
+        });
+
+        // Enhanced preview function
+        function previewImage(input) {
+            var preview = $('#photoPreview');
+            var fileNameDisplay = $('#photoFileName');
+
+            if (input.files && input.files[0]) {
+                // Validate file
+                if (input.files[0].size > 2 * 1024 * 1024) {
+                    alert('File size exceeds 2MB limit');
+                    input.value = '';
+                    return;
+                }
+
+                if (!['image/jpeg', 'image/png'].includes(input.files[0].type)) {
+                    alert('Only JPG/PNG images are allowed');
+                    input.value = '';
+                    return;
+                }
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.html('<img src="' + e.target.result + '" id="previewImage" style="max-width:100%; max-height:100%;" />');
+                    fileNameDisplay.text(input.files[0].name);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Clear image function
+        function clearImage() {
+            $('#ImageFile').val('');
+            $('#photoPreview').html('<span class="text-muted">No photo</span>');
+            $('#photoFileName').text('No file chosen');
+        }
+
         // Auto-format CNIC input
         document.getElementById('CNIC').addEventListener('input', function(e) {
             var value = e.target.value.replace(/\D/g, '');
@@ -377,5 +467,7 @@
         document.getElementById('GuardianMobileNumber').addEventListener('input', function(e) {
             formatPhoneNumber(e.target);
         });
+       
+      
     </script>
 }

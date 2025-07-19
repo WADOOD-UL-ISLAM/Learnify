@@ -1,9 +1,10 @@
 
-using LearnifyD1.Data;
-using LearnifyD1.Models;
-using Microsoft.EntityFrameworkCore;
 using DinkToPdf;
 using DinkToPdf.Contracts;
+using LearnifyD1.Data;
+using LearnifyD1.Models;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("Myconn")));
 builder.Services.AddSession();
-
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 2097152; // 2MB
+});
 
 
 var app = builder.Build();

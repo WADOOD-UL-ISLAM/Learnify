@@ -390,10 +390,91 @@ namespace LearnifyD1.Controllers
 
          string ConvertToWords(int number) => number.ToWords().Transform(To.TitleCase) + " Rupees Only";
 
-       
+
+        [HttpGet]
+        public async Task<IActionResult> AdmissionFormPreview(int id)
+        {
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            // Check for existing image
+            string imagePath = $"/images/students/student_{student.StudentId}.jpg";
+            string physicalPath = Path.Combine(_env.WebRootPath, "images", "students", $"student_{student.StudentId}.jpg");
+
+            if (System.IO.File.Exists(physicalPath))
+            {
+                student.ImagePath = imagePath;
+            }
+
+            return View(student);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AdmissionFormPreview(int id, Student model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            // Update all fields except image
+            student.StudentName = model.StudentName;
+            student.FatherName = model.FatherName;
+            student.CNIC = model.CNIC;
+            student.DateofBirth = model.DateofBirth;
+            student.Gender = model.Gender;
+            student.age = model.age;
+            student.StudentMobileNumber = model.StudentMobileNumber;
+            student.StudentEmail = model.StudentEmail;
+            student.GuardianMobileNumber = model.GuardianMobileNumber;
+            student.Address = model.Address;
+
+            // Handle image upload if new file was provided
+            if (model.ImageFile != null && model.ImageFile.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_env.WebRootPath, "images", "students");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                // Delete old image if exists
+                var oldImagePath = Path.Combine(uploadsFolder, $"student_{student.StudentId}.jpg");
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+
+                // Save new image
+                var fileName = $"student_{student.StudentId}.jpg";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.ImageFile.CopyToAsync(stream);
+                }
+
+                student.ImagePath = $"/images/students/{fileName}";
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Student updated successfully!";
+            return RedirectToAction("AdmissionFormPreview", new { id = student.StudentId });
+        }
 
 
-       
+
 
     }
 
