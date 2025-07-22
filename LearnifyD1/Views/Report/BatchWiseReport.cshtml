@@ -1,0 +1,30 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Batch-wise Reporting";
+}
+
+<h3 class="mb-4">📚 Batch-wise Fee & Student Summary</h3>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Batch Name</th>
+            <th>Course Name</th>
+            <th>Total Students</th>
+            <th>Total Fees Collected</th>
+            <th>Instructor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BatchName</td>
+                <td>@item.CourseName</td>
+                <td>@item.TotalStudents</td>
+                <td>Rs. @item.TotalFeesCollected</td>
+                <td>@item.InstructorName</td>
+            </tr>
+        }
+    </tbody>
+</table>

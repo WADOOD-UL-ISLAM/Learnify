@@ -1,0 +1,193 @@
+﻿@{
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<div class="container reports-dashboard">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <div class="icon-wrapper bg-primary me-3">
+                    <i class="fas fa-chart-line text-white"></i>
+                </div>
+                <div>
+                    <h1 class="mb-0">Reports Dashboard</h1>
+                    <p class="text-muted mb-0">Access all academy reports and analytics</p>
+                </div>
+            </div>
+            <hr class="dashboard-divider">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card report-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="report-icon bg-info">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h5 class="card-title mb-0 ms-3">Student Reports</h5>
+                    </div>
+                    <div class="list-group report-list-group">
+                        <a asp-controller="Report" asp-action="StudentAdmissionReport" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">1</span>
+                            <span>Student Admission Report</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                        <a asp-controller="Report" asp-action="AllStudents" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">2</span>
+                            <span>Student Admission Report</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card report-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="report-icon bg-warning">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h5 class="card-title mb-0 ms-3">Financial Reports</h5>
+                    </div>
+                    <div class="list-group report-list-group">
+                        <a asp-controller="Report" asp-action="UnpaidFees" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">3</span>
+                            <span>Unpaid Students</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                        <a asp-controller="Report" asp-action="FeeReport" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">4</span>
+                            <span>Paid Students</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                        <a asp-controller="Report" asp-action="MonthlyCollection" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">5</span>
+                            <span>Monthly Collection</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                        <a asp-controller="Report" asp-action="BatchWiseReport" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">6</span>
+                            <span>Batch-wise Fee Status</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card report-card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="report-icon bg-success">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h5 class="card-title mb-0 ms-3">Academic Reports</h5>
+                    </div>
+                    <div class="list-group report-list-group">
+                        <a asp-controller="Report" asp-action="CourseWiseStudentCount" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">7</span>
+                            <span>Batch -Course Information</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                        <a asp-controller="Report" asp-action="InstructorWiseReport" class="list-group-item list-group-item-action d-flex align-items-center">
+                            <span class="badge bg-primary me-2">8</span>
+                            <span>Instructor Assignments</span>
+                            <i class="fas fa-chevron-right ms-auto"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .reports-dashboard {
+        padding: 2rem 0;
+    }
+
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+    }
+
+    .dashboard-divider {
+        border-top: 2px solid rgba(0, 0, 0, 0.1);
+        margin: 1.5rem 0;
+    }
+
+    .report-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+    .report-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.25rem;
+    }
+
+    .report-list-group {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .report-list-group .list-group-item {
+            border: none;
+            border-left: 3px solid transparent;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+            .report-list-group .list-group-item:hover {
+                background-color: #f8f9fa;
+                border-left-color: var(--bs-primary);
+                transform: translateX(5px);
+            }
+
+            .report-list-group .list-group-item i {
+                color: var(--bs-gray-500);
+                transition: all 0.2s ease;
+            }
+
+            .report-list-group .list-group-item:hover i {
+                color: var(--bs-primary);
+            }
+
+    .card-title {
+        font-weight: 600;
+        color: var(--bs-dark);
+    }
+
+    .badge {
+        font-weight: 500;
+        min-width: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>

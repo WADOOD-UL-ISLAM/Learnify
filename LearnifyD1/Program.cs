@@ -1,10 +1,12 @@
 
-using DinkToPdf;
-using DinkToPdf.Contracts;
+
 using LearnifyD1.Data;
 using LearnifyD1.Models;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+
+using System.ComponentModel;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,11 @@ builder.Services.Configure<FormOptions>(options =>
 });
 
 
+
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

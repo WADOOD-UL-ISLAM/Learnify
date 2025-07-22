@@ -92,6 +92,38 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/AllStudents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEFsbFN0dWRlbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/BatchWiseReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEJhdGNoV2lzZVJlcG9ydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/CourseWiseStudentCount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XENvdXJzZVdpc2VTdHVkZW50Q291bnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/FeeReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEZlZVJlcG9ydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/InstructorWiseReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEluc3RydWN0b3JXaXNlUmVwb3J0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/MonthlyCollection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XE1vbnRobHlDb2xsZWN0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/StudentAdmissionReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XFN0dWRlbnRBZG1pc3Npb25SZXBvcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Wadood/source/repos/LearnifyD1/LearnifyD1/Views/Report/UnpaidFees.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XFVucGFpZEZlZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

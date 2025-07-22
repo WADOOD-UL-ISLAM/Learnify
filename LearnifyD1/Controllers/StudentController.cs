@@ -1,5 +1,4 @@
-﻿using DinkToPdf;
-using DinkToPdf.Contracts;
+﻿
 using Humanizer;
 using LearnifyD1.Data;
 using LearnifyD1.Models;

@@ -61,35 +61,36 @@
                         <span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Course" asp-action="Index">
-                        <i class="fas fa-book"></i>
-                        <span class="sidebar-text">Courses</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Batch" asp-action="Index">
-                        <i class="fas fa-book-open-reader"></i>
-                        <span class="sidebar-text">Batch Management</span>
-                    </a>
-                </li>
-                 <li class="nav-item">
+               
+            }
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Course" asp-action="Index">
+                    <i class="fas fa-book"></i>
+                    <span class="sidebar-text">Courses</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Batch" asp-action="Index">
+                    <i class="fas fa-book-open-reader"></i>
+                    <span class="sidebar-text">Batch Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Role" asp-action="Index">
                     <i class="fas fa-user-tie"></i>
                     <span class="sidebar-text">Roles</span>
                 </a>
-                </li>
-            
-                <li class="nav-item">
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" asp-controller="Employee" asp-action="Index">
                     <i class="fas fa-address-card"></i>
                     <span class="sidebar-text">Employees</span>
                 </a>
-                </li>
-            }
+            </li>
            
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Report" asp-action="UnpaidFeesDesk">📄 Unpaid Fees Report</a>
+                    <a class="nav-link" asp-controller="Report" asp-action="Index">Reporting Section</a>
                 </li>
             
             @if (Context.Session.GetString("Username") != null)

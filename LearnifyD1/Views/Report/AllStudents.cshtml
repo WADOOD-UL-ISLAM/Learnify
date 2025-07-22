@@ -1,0 +1,44 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "All Student Details";
+}
+
+<h3 class="mb-4">📘 All Registered Student Details</h3>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Father Name</th>
+            <th>CNIC</th>
+            <th>Date of Birth</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Guardian Mobile</th>
+            <th>Address</th>
+            <th>Admission Date</th>
+            <th>Enrolled Batches</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentName</td>
+                <td>@student.FatherName</td>
+                <td>@student.CNIC</td>
+                <td>@student.DateofBirth.ToString("dd-MM-yyyy")</td>
+                <td>@student.age</td>
+                <td>@student.Gender</td>
+                <td>@student.StudentEmail</td>
+                <td>@student.StudentMobileNumber</td>
+                <td>@student.GuardianMobileNumber</td>
+                <td>@student.Address</td>
+                <td>@(student.AdmissionDate != DateTime.MinValue ? student.AdmissionDate.ToString("dd-MM-yyyy") : "-")</td>
+                <td>@string.Join(", ", student.Batches)</td>
+            </tr>
+        }
+    </tbody>
+</table>

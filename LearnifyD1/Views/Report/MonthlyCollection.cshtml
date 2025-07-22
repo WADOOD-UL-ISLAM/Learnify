@@ -1,0 +1,45 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Monthly Fee Collection";
+    string[] monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+    int selectedYear = ViewBag.SelectedYear;
+    List<int> years = ViewBag.Years as List<int>;
+}
+
+<h3 class="mb-4">📆 Monthly Fee Collection - @selectedYear</h3>
+
+<form method="get" class="mb-3">
+    <label>Select Year:</label>
+    <select name="year" class="form-select d-inline w-auto me-2" onchange="this.form.submit()">
+        @foreach (var year in years)
+        {
+            if (year == selectedYear)
+            {
+                <option value="@year" selected>@year</option>
+            }
+            else
+            {
+                <option value="@year">@year</option>
+            }
+        }
+    </select>
+</form>
+
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Month</th>
+            <th>Total Collection</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@monthNames[item.Month - 1]</td>
+                <td>Rs. @item.TotalAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>
