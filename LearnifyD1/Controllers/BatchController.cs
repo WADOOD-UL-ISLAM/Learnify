@@ -1,4 +1,4 @@
-﻿using LearnifyD1.Data;
+using LearnifyD1.Data;
 using LearnifyD1.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -40,17 +40,21 @@ namespace LearnifyD1.Controllers
             List<Batch> batchesInCourse;
             ViewBag.Courses = await _context.Courses.ToListAsync();
             ViewBag.SelectedCourse = CourseId;
+            int currentMonth = DateTime.Now.Month;
 
             if (CourseId != 0)
             {
-                 batchesInCourse = await _context.Batches
-                 .Where(b => b.CourseId == CourseId)
-                 .ToListAsync();
+                batchesInCourse = await _context.Batches
+                .Where(b => b.CourseId == CourseId)
+                .Where(t => t.EndMonth >= currentMonth)
+                .ToListAsync();
 
             }
             else
             {
-                batchesInCourse = await _context.Batches.ToListAsync ();
+                batchesInCourse = await _context.Batches
+                .Where(t => t.EndMonth >= currentMonth)
+                .ToListAsync();
             }
 
             return View("Index", batchesInCourse);
@@ -91,9 +95,8 @@ namespace LearnifyD1.Controllers
 
             _context.Batches.Add(batch);
             await _context.SaveChangesAsync();
-           
+
             ViewBag.Courses = await _context.Courses.ToListAsync();
-            var batches = await _context.Batches.ToListAsync();
             List<TimeOnly> timeSlots = new();
 
             for (int hour = 16; hour <= 22; hour++)
@@ -112,7 +115,12 @@ namespace LearnifyD1.Controllers
 
             ViewBag.Instructors = new SelectList(instructors, "EmployeeId", "Name");
 
-            return View("Index",batches);
+            int currentMonth = DateTime.Now.Month;
+
+
+            var batches = await _context.Batches.Include(b => b.Course).Where(t => t.EndMonth >= currentMonth)
+            .ToListAsync();
+            return View("Index", batches);
 
         }
 
